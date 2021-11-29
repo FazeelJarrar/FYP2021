@@ -8,9 +8,10 @@
 
  import React from 'react';
  import Icon from 'react-native-vector-icons/AntDesign';
- //import HomeScreen from './src/screens/HomeScreen/index';
+ import HomeScreen from './src/screens/HomeScreen/index';
  import DestinationSearch from './src/screens/DestinationSearch/index';
- 
+ import SearchResults from './src/screens/SearchResults/index';
+// import SearchResults from './src/screens/SearchResults'; 
  import type {Node} from 'react';
  
  import {
@@ -30,6 +31,7 @@
    LearnMoreLinks,
    ReloadInstructions,
  } from 'react-native/Libraries/NewAppScreen';
+
  
  const Section = ({children, title}): Node => {
    const isDarkMode = useColorScheme() === 'dark';
@@ -67,8 +69,9 @@
    return (
      <>
        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-       {/* <HomeScreen />  */}
-       <DestinationSearch />
+       {/*  <HomeScreen />   */}
+       {/* <DestinationSearch /> */}
+       <SearchResults />
      </>
  
    );
