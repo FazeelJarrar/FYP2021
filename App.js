@@ -6,22 +6,31 @@
  * @flow strict-local
  */
 
- import React from 'react';
+import 'react-native-gesture-handler';
+
+ import React, { useEffect } from 'react';
  import Icon from 'react-native-vector-icons/AntDesign';
- import HomeScreen from './src/screens/HomeScreen/index';
- import DestinationSearch from './src/screens/DestinationSearch/index';
- import SearchResults from './src/screens/SearchResults/index';
-// import SearchResults from './src/screens/SearchResults'; 
+ import Geolocation from '@react-native-community/geolocation'; 
+ navigator.geolocation = require('@react-native-community/geolocation');
+ import { NavigationContainer } from '@react-navigation/native';
+ 
+ import Router from './src/navigation/root';
+ import HomeScreen from './src/screens/HomeScreen/index'
+ import SearchResults from './src/screens/SearchResults'; 
+
  import type {Node} from 'react';
  
  import {
    SafeAreaView,
    ScrollView,
    StatusBar,
-   StyleSheet,
+   StyleSheet, 
    Text,
    useColorScheme,
    View,
+   PermissionsAndroid,
+   Platform,
+  
  } from 'react-native';
  
  import {
@@ -31,6 +40,8 @@
    LearnMoreLinks,
    ReloadInstructions,
  } from 'react-native/Libraries/NewAppScreen';
+
+ import { create } from 'react-test-renderer';
 
  
  const Section = ({children, title}): Node => {
@@ -44,7 +55,7 @@
              color: isDarkMode ? Colors.white : Colors.black,
            },
          ]}>
-         {title}
+         {title}r
        </Text>
        <Text
          style={[
@@ -65,13 +76,51 @@
    const backgroundStyle = {
      backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
    };
+
+   const AndroidPermissions = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        { 
+          title: "Car Pool App needs Location Permission (Recommended)",
+          message:
+            "Car Pool App needs access to your location " +
+            "so you can share awesome rides.",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("You can use the location");
+      } else {
+        console.log("Location permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+   }
+
+   useEffect( () => {
+    if (Platform.OS === 'android') { 
+      AndroidPermissions(); 
+    }
+    else {
+      //FOR IOS ONLY
+      Geolocation.requestAuthorization();
+    }
+
+   },  [] )
  
    return (
      <>
-       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-       {/*  <HomeScreen />   */}
-       {/* <DestinationSearch /> */}
-       <SearchResults />
+     
+     <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        {/* <HomeScreen />   */}
+       {/* <Router />  */}
+       {/* <DestinationSearch />   */}
+       <SearchResults />  
+      
      </>
  
    );

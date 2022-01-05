@@ -4,15 +4,35 @@ import styles from "./styles";
 import Ionicons from "react-native-vector-icons/Ionicons"
 
 const RideTypeRow = (props) => {
+
+    const {type} = props;
+
+    const getImage = () => {
+        if(type.type == 'UberX'){
+            return require('../../assets/images/UberX.jpeg')
+        }
+        if(type.type == 'Comfort'){
+            return require('../../assets/images/Comfort.jpeg')
+        }
+        return require('../../assets/images/UberXL.jpeg')
+
+    }
+
     return (
         <View style={styles.container}>
 
-            <Image styles={styles.image} source={require('../../assets/images/UberX.jpeg')} />
+            <Image 
+                style={styles.images}
+                source={getImage()}> 
+            </Image>
+            
             <View styles={styles.middleContainer}>
+            
                 <Text style={styles.typeTitle}>
-                    UberX
-                    <Ionicons name={'person'} size={12} />3
+                    {type.type}{'  '}
+                    <Ionicons name={'person'} size={16} />3
                 </Text>
+            
                 <Text style={styles.time}>
                     8:30 PM Drop Off
                 </Text>
@@ -22,7 +42,7 @@ const RideTypeRow = (props) => {
             <View styles={styles.rightContainer}>
                 <Ionicons name={'pricetag'} size={12} color={'#42d742'} />
                 <Text style={styles.price}>
-                    est. Rs.227
+                    est. Rs.{type.price}
                 </Text>
 
             </View>
